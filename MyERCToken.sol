@@ -1,28 +1,14 @@
 pragma solidity ^0.4.15;
 
 contract MyERCToken {
-  // Create a table so that we can map addresses
-  // to the balances associated with them
   mapping(address => uint256) balances;
-  // Create a table so that we can map
-  // the addresses of contract owners to
-  // those who are allowed to utilize the owner's contract
   mapping(address => mapping (address => uint256)) allowed;
-  // In this case, the total supply
-  // of MyERCToken is fixed, but
-  // it can very much be changed
   uint256 _totalSupply = 1000000;
-  // Owner of this contract
   address public owner;
   string public constant symbol = "MYT";
   string public constant name = "This Is ERC20 Token Make By Wingchiu";
   
   function totalSupply() constant returns (uint256 theTotalSupply) {
-    // Because our function signature
-    // states that the returning variable
-    // is "theTotalSupply", we'll just set that variable
-    // to the value of the instance variable "_totalSupply"
-    // and return it
     theTotalSupply = _totalSupply;
     return theTotalSupply;
   }
@@ -33,18 +19,11 @@ contract MyERCToken {
   
   function approve(address _spender, uint256 _amount) returns (bool success) {
     allowed[msg.sender][_spender] = _amount;
-    // Fire the event "Approval" to execute any logic
-    // that was listening to it
     Approval(msg.sender, _spender, _amount);
     return true;
   }
   
-  // Note: This function returns a boolean value
-  //       indicating whether the transfer was successful
   function transfer(address _to, uint256 _amount) returns (bool success) {
-    // If the sender has sufficient funds to send
-    // and the amount is not zero, then send to
-    // the given address
     if (balances[msg.sender] >= _amount 
       && _amount > 0
       && balances[_to] + _amount > balances[_to]) {
@@ -77,8 +56,6 @@ contract MyERCToken {
     return allowed[_owner][_spender];
   }
 
-  // Triggered whenever approve(address _spender, uint256 _value) is called.
   event Approval(address indexed _owner, address indexed _spender, uint256 _value);
-  // Triggered when tokens are transferred.
   event Transfer(address indexed _from, address indexed _to, uint256 _value);
 }
